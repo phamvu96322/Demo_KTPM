@@ -1,29 +1,32 @@
-name: Python Selenium Tests
+name: Python application
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
   pull_request:
-    branches: [main]
+    branches: [ "main" ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🔽 Checkout repository
-      uses: actions/checkout@v3
+    - name: 🔽 Checkout code
+      uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
-      uses: actions/setup-python@v4
+    - name: 🔧 Setup Python
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version: "3.12"
 
     - name: 📦 Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install selenium
+        pip install -r requirements.txt
 
-    - name: 🚀 Run tests
+    - name: 🧪 Run tests
       run: |
-        python -m unittest discover -s Test_commerce
+        echo "Tạo file __init__.py để đảm bảo thư mục là importable"
+        mkdir -p Test_commerce
+        touch Test_commerce/__init__.py
+        python -m unittest discover -s Test_commerce -p "*.py"
